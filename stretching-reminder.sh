@@ -8,7 +8,16 @@ DISPLAY=:0
 export DISPLAY
 
 # Ambil DBUS session untuk notifikasi desktop
-export DBUS_SESSION_BUS_ADDRESS=$(cat /proc/$(pgrep -u $USER gnome-session | head -1)/environ 2>/dev/null | tr '\0' '\n' | grep DBUS_SESSION_BUS_ADDRESS | cut -d= -f2- || echo "unix:path=/run/user/$(id -u)/bus")
+USER_ID=$(id -u)
+DBUS_FILE="/run/user/$USER_ID/bus"
+
+if [ -S "$DBUS_FILE" ]; then
+    export DBUS_SESSION_BUS_ADDRESS="unix:path=$DBUS_FILE"
+else
+    export DBUS_SESSION_BUS_ADDRESS=$(grep -z DBUS_SESSION_BUS_ADDRESS \
+        /proc/$(pgrep -u $USER gnome-shell | head -1)/environ \
+        2>/dev/null | tr -d '\0' | cut -d= -f2-)
+fi
 
 HOUR=$(date +%H)
 EXERCISES=(
