@@ -15,7 +15,7 @@
 | **Created**      | 2026-11-10                                         |
 | **Last updated** | 2026-11-10                                         |
 
-Related file: `~/Workspaces/pg-playground/docker-compose.yml` (defines the Postgres container the script talks to).
+Related file: `~/.pg-playground/docker-compose.yml` (defines the Postgres container the script talks to).
 
 ---
 
@@ -48,7 +48,7 @@ sudo apt install docker.io docker-compose-v2
 ### 1. Create the Postgres container
 
 ```bash
-mkdir -p ~/Workspaces/pg-playground && cd ~/Workspaces/pg-playground
+mkdir -p ~/.pg-playground && cd ~/.pg-playground
 ```
 
 Create `docker-compose.yml`:
@@ -275,7 +275,7 @@ docker exec -i pg-playground psql -U admin -d demo_todo < demo_todo.sql
 **Fix:**
 
 ```bash
-cd ~/Workspaces/pg-playground && docker compose up -d
+cd ~/.pg-playground && docker compose up -d
 ```
 
 ### Error: role or database already exists
@@ -324,13 +324,13 @@ sudo ss -ltnp | grep 5432
 sudo apt install docker.io docker-compose-v2
 
 # 2. Restore the compose file and script, then make the script executable
-mkdir -p ~/Workspaces/pg-playground ~/.local/bin
-cp docker-compose.yml ~/Workspaces/pg-playground/
+mkdir -p ~/.pg-playground ~/.local/bin
+cp docker-compose.yml ~/.pg-playground/
 cp newdb.sh ~/.local/bin/
 chmod +x ~/.local/bin/newdb.sh
 
 # 3. Start Postgres
-cd ~/Workspaces/pg-playground && docker compose up -d
+cd ~/.pg-playground && docker compose up -d
 
 # 4. Restore data from backup (if any)
 docker exec -i pg-playground psql -U admin < ~/pg-backup/all-YYYY-MM-DD.sql
